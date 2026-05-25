@@ -14,37 +14,37 @@ Cấu hình mặc định:
 
 | Linh kiện | Kết nối |
 |---|---|
-| Radio SX1276 | SPI1 — NSS: PA4, RESET: PB0, DIO0: PA3, DIO1: PA8 |
-| Cảm biến MQ-7 | Analog — PA0 (ADC1 CH0) |
-| Màn hình OLED | I2C1 — địa chỉ 0x3C (SSD1306) |
+| Radio SX1276 | SPI1 - NSS: PA4, RESET: PB0, DIO0: PA3, DIO1: PA8 |
+| Cảm biến MQ-7 | Analog - PA0 (ADC1 CH0) |
+| Màn hình OLED | I2C1 - địa chỉ 0x3C (SSD1306) |
 | LED trạng thái | PC13 (active low, onboard BlackPill) |
 
 ## Cấu trúc thư mục
 
 ```
 Core/Src/
-├── main.c          — vòng lặp chính: đọc MQ-7, hiển thị OLED, gọi LoRaWAN_Process()
-├── lora_app.c      — state machine LoRaWAN: Join → Wait → Send (mỗi 20 s)
-├── oled.c          — driver màn hình SSD1306 qua I2C
-├── gpio.c          — khởi tạo GPIO (sinh bởi CubeMX)
-├── spi.c           — khởi tạo SPI1 cho radio
-└── i2c.c           — khởi tạo I2C1 cho OLED
+├── main.c          - vòng lặp chính: đọc MQ-7, hiển thị OLED, gọi LoRaWAN_Process()
+├── lora_app.c      - state machine LoRaWAN: Join → Wait → Send (mỗi 20 s)
+├── oled.c          - driver màn hình SSD1306 qua I2C
+├── gpio.c          - khởi tạo GPIO (sinh bởi CubeMX)
+├── spi.c           - khởi tạo SPI1 cho radio
+└── i2c.c           - khởi tạo I2C1 cho OLED
 
 Core/Inc/
-├── Commissioning.h — DevEUI / JoinEUI / AppKey / Region  
-├── board.h         — mapping chân GPIO của radio
-└── ...             — header HAL sinh bởi CubeMX
+├── Commissioning.h - DevEUI / JoinEUI / AppKey / Region  
+├── board.h         - mapping chân GPIO của radio
+└── ...             - header HAL sinh bởi CubeMX
 
 Core/LoRaMac/
-├── board/          — board port: GPIO, SPI, timer (TIM2 thay RTC), delay
-├── mac/            — LoRaMac stack core + region (AS923, EU868, US915, ...)
-├── radio/sx1276/   — driver chip radio SX1276
-└── peripherals/soft-se/ — mã hóa AES-128 + CMAC bằng phần mềm
+├── board/          - board port: GPIO, SPI, timer (TIM2 thay RTC), delay
+├── mac/            - LoRaMac stack core + region (AS923, EU868, US915, ...)
+├── radio/sx1276/   - driver chip radio SX1276
+└── peripherals/soft-se/ - mã hóa AES-128 + CMAC bằng phần mềm
 
-cmake/              — toolchain file GCC/Clang, tích hợp STM32CubeMX
-CMakeLists.txt      — cấu hình build: chọn radio, region, secure element
-CMakePresets.json   — preset Debug / Release
-STM32F401XX_FLASH.ld — linker script
+cmake/              - toolchain file GCC/Clang, tích hợp STM32CubeMX
+CMakeLists.txt      - cấu hình build: chọn radio, region, secure element
+CMakePresets.json   - preset Debug / Release
+STM32F401XX_FLASH.ld - linker script
 ```
 
 ## Thứ tự chạy
@@ -59,7 +59,7 @@ startup_stm32f401xc.s       reset handler → gọi main()
       ├── OLED_Init()       khởi động màn hình
       └── LoRaWAN_Init()    khởi động LoRaMac, cấu hình keys, gửi Join Request
 
-      while(1) — mỗi 500 ms:
+      while(1):
       ├── MQ7_ReadRaw()         đọc ADC
       ├── MQ7_AdcToPpm()        tính ppm CO
       ├── LoRaWAN_SetMQ7Raw()   cập nhật payload
@@ -106,7 +106,7 @@ Tuỳ chọn:
 
 ## Build
 
-**Cách 1 — CMake Presets (khuyến nghị):**
+**Cách 1 - CMake Presets (khuyến nghị):**
 
 ```bash
 cmake --preset Debug
@@ -120,7 +120,7 @@ cmake --build --preset Release
 
 Output nằm trong `build/Debug/` hoặc `build/Release/`.
 
-**Cách 2 — Thủ công:**
+**Cách 2 - Thủ công:**
 
 ```bash
 cmake -S . -B build/Debug -G Ninja \
